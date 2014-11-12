@@ -5,11 +5,12 @@ require 'rubygems'
 
 if Facter.value('osfamily') != 'windows'
 
-  if Gem::Version.new(Facter.value(:puppetversion)) >= Gem::Version.new('3.6')
+  if Gem::Version.new(Facter.value(:puppetversion).split(/\s+/).first) >= Gem::Version.new('3.6')
     pkg = Puppet::Type.type(:package).new(:name => 'python-pip', :allow_virtual => 'false')
   else
     pkg = Puppet::Type.type(:package).new(:name => 'python-pip')
   end
+
   Facter.add("pip_version") do
     has_weight 100
     setcode do
